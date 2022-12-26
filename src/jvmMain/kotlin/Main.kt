@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import screen.LoginScreen
+import screen.MainScreen
 import screen.RegisterScreen
 
 @Composable
@@ -28,6 +29,6 @@ fun App() {
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
-        RegisterScreen()
+        MainScreen()
     }
 }
