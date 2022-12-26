@@ -32,8 +32,8 @@ import java.io.File
 @Composable
 @Preview
 fun LoginScreen(
-
     onLogin: (userName: String, pwd: String) -> Unit = { _, _ -> },
+    onRegister: () -> Unit = {},
 ) {
 
     val (getUserName, setUserName) = remember {
@@ -80,7 +80,7 @@ fun LoginScreen(
             placeholder = {
                 Text("用户名")
             })
-
+        //密码输入框
         OutlinedTextField(
             modifier = Modifier.padding(10.dp),
             value = getPwd,
@@ -101,16 +101,24 @@ fun LoginScreen(
                 keyboardType = KeyboardType.Password,
             ),
         )
-
-        TextButton(
-            onClick = {
-                onLogin(getUserName, getPwd)
-            },
-            content = {
-                Text("登陆")
-            },
-            modifier = Modifier.padding(10.dp),
-        )
+        //注册用户 & 登陆
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
+            .padding(top = 10.dp)) {
+            TextButton(
+                onClick = onRegister,
+                content = {
+                    Text("没有账号?点击注册")
+                }
+            )
+            TextButton(
+                onClick = {
+                    onLogin(getUserName, getPwd)
+                },
+                content = {
+                    Text("登陆")
+                },
+            )
+        }
 
     }
 
