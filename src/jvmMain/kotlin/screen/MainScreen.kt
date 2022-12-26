@@ -51,7 +51,7 @@ fun LeftNav(
                 painter = painterResource("icon.jpg"),
                 modifier = Modifier
                     .padding(10.dp)
-                    .size(48.dp)
+                    .size(40.dp)
                     .clip(CircleShape),
                 contentDescription = "头像",
             )
@@ -92,7 +92,7 @@ fun NavIconButton(
         painter = painterResource(resource),
         modifier = Modifier
             .padding(top = 16.dp)
-            .size(30.dp)
+            .size(26.dp)
             .clickable {
                 onSelectedChanged(selectedIndex)
             },
