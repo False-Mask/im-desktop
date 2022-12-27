@@ -1,0 +1,42 @@
+package utils
+
+import androidx.compose.ui.res.painterResource
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+
+private val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd:HH:mm")
+
+//当前时间与之前时间进行对比，如果日期不一样采用yy/MM/dd格式
+//否则采用HH:mm
+fun dataFormatter(timeStamp: Long): String {
+    val current = dateFormat.format(Date(System.currentTimeMillis()))
+    val before = dateFormat.format(Date(timeStamp))
+    val cur = current.split(":", "/")
+    val bef = before.split(":", "/")
+    return if (cur[0] != bef[0]) {
+        // yy/MM/dd
+        before.substring(2, 10)
+    } else if (cur[1] != bef[1]) {
+        // yy/MM/dd
+        before.substring(2, 10)
+    } else if (cur[2] == (bef[2].toInt() + 1).toString()) {
+        "昨天"
+    } else if(cur[2] != bef[2]) {
+        // yy/MM/dd
+        before.substring(2, 10)
+    } else {
+        // dd:HH:mm
+        before.substring(11, 16)
+    }
+}
+
+fun parseData(str: String): Long {
+    return dateFormat.parse(str).time
+}
+
+//tester
+fun main() {
+    val stamp = dateFormat.parse("2022/12/27:23:11").time
+    println(dataFormatter(stamp))
+}
