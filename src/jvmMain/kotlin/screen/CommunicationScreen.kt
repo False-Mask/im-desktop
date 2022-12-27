@@ -1,9 +1,9 @@
 package screen
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,30 +35,62 @@ import java.net.URL
 
 
 @Composable
-fun CommunicationScreen() {
+fun CommunicationScreen(list: List<Contacts>) {
 
     Row {
-        Contacts()
+        Contacts(list)
+        Divider(
+            modifier = Modifier.width(1.dp)
+                .fillMaxHeight()
+        )
         Messages()
     }
 
 }
 
 @Composable
-fun Contacts() {
+fun Contacts(
+    list: List<Contacts>,
+    onAddClicked: () -> Unit = {}
+) {
     Column(
         modifier = Modifier.width(260.dp)
             .fillMaxHeight()
     ) {
-        Search()
-        //Lists()
+        Box(modifier = Modifier.fillMaxWidth()) {
+            SearchBar(onAddClicked)
+        }
+        Lists(list)
+    }
+}
+
+@Composable
+fun SearchBar(onAddClicked: () -> Unit = {}) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Box(modifier = Modifier.width(180.dp)) {
+            Search()
+        }
+        Icon(
+            painterResource("add.svg"), contentDescription = null, modifier = Modifier
+                .size(25.dp)
+                .clip(RoundedCornerShape(5.dp))
+                .clickable {  }
+                .background(color = searchBackgroundColor)
+
+        )
     }
 }
 
 
 @Composable
 fun Lists(list: List<Contacts>) {
-    LazyRow {
+    LazyColumn {
         items(list) {
             Item(it)
         }
@@ -88,12 +120,16 @@ fun ItemPreview() {
 }
 
 @Composable
-fun Item(contact: Contacts) {
+fun Item(
+    contact: Contacts,
+    onItemClicked: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
-            .padding(10.dp)
+            .height(60.dp)
+            .clickable(onClick = onItemClicked)
+            .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
         Row {
             Image(
@@ -101,14 +137,15 @@ fun Item(contact: Contacts) {
                     inputStream = URL(contact.icon).openStream().buffered()
                 ),
                 contentDescription = null,
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.size(40.dp),
                 contentScale = ContentScale.Crop
             )
             Column(
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -117,11 +154,11 @@ fun Item(contact: Contacts) {
                 ) {
                     Text(
                         text = contact.name,
-                        fontSize = 18.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Start,
                         modifier = Modifier.width(70.dp),
                     )
                     val timeStamp = contact.lastTime
@@ -155,7 +192,6 @@ fun Search() {
     Surface(
         color = searchBackgroundColor,
         modifier = Modifier
-            .padding(top = 20.dp, start = 10.dp, end = 10.dp)
             .clip(RoundedCornerShape(5.dp))
     ) {
         val (getV, setV) = remember {
@@ -164,7 +200,9 @@ fun Search() {
         BasicTextField(
             value = getV,
             onValueChange = setV,
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier
+                .padding(start = 10.dp)
+                .height(25.dp),
             singleLine = true,
             decorationBox = {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {

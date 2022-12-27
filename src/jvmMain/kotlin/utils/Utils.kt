@@ -34,9 +34,3 @@ fun dataFormatter(timeStamp: Long): String {
 fun parseData(str: String): Long {
     return dateFormat.parse(str).time
 }
-
-//tester
-fun main() {
-    val stamp = dateFormat.parse("2022/12/27:23:11").time
-    println(dataFormatter(stamp))
-}

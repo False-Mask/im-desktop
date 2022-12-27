@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import bean.Contacts
 import style.itemSelectColor
 import style.itemUnSelectedColor
 import style.navBackgroundColor
@@ -20,7 +21,7 @@ import style.navBackgroundColor
 @Composable
 @Preview
 fun MainScreen(
-
+    list: List<Contacts>
 ) {
 
     val (selectedItem, selectedItemChanged) = remember {
@@ -29,7 +30,7 @@ fun MainScreen(
 
     Row {
         LeftNav(selectedItem = selectedItem, onSelectedChanged = selectedItemChanged)
-        RightContent()
+        RightContent(list)
 
     }
 }
@@ -101,6 +102,6 @@ fun NavIconButton(
 }
 
 @Composable
-fun RightContent() {
-    CommunicationScreen()
+fun RightContent(list: List<Contacts>) {
+    CommunicationScreen(list)
 }

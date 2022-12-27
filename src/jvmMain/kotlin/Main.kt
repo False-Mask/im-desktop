@@ -16,6 +16,7 @@ import androidx.compose.ui.window.singleWindowApplication
 import screen.LoginScreen
 import screen.MainScreen
 import screen.RegisterScreen
+import test.list
 
 @Composable
 @Preview
@@ -40,7 +41,7 @@ fun main() = application {
             icon = painterResource("wechat.svg"),
             title = "Wechat"
         ) {
-            MainScreen()
+            MainScreen(list)
         }
     }
 
