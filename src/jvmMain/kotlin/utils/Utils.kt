@@ -1,6 +1,7 @@
 package utils
 
 import androidx.compose.ui.res.painterResource
+import java.security.MessageDigest
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,4 +34,30 @@ fun dataFormatter(timeStamp: Long): String {
 
 fun parseData(str: String): Long {
     return dateFormat.parse(str).time
+}
+
+fun md5(str: String): String {
+    val md = MessageDigest.getInstance("MD5")
+    val data = md.digest(str.toByteArray())
+
+
+    return toHex(data)
+
+}
+
+fun toHex(byteArray: ByteArray): String {
+    val result = with(StringBuilder()) {
+        byteArray.forEach {
+            val hex = it.toInt() and (0xFF)
+            val hexStr = Integer.toHexString(hex)
+            if (hexStr.length == 1) {
+                this.append("0").append(hexStr)
+            } else {
+                this.append(hexStr)
+            }
+        }
+        this.toString()
+    }
+    //转成16进制后是32字节
+    return result
 }

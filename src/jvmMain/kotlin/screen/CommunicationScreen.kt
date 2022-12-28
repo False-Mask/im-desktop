@@ -4,8 +4,8 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -17,9 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,10 +33,19 @@ import java.net.URL
 
 
 @Composable
-fun CommunicationScreen(list: List<Contacts>) {
+fun CommunicationScreen(
+    list: List<Contacts>,
+    onAddClicked: () -> Unit = {},
+    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+
+) {
 
     Row {
-        Contacts(list)
+        Contacts(
+            list = list,
+            onAddClicked = onAddClicked,
+            onItemClicked = onItemClicked,
+        )
         Divider(
             modifier = Modifier.width(1.dp)
                 .fillMaxHeight()
@@ -51,7 +58,8 @@ fun CommunicationScreen(list: List<Contacts>) {
 @Composable
 fun Contacts(
     list: List<Contacts>,
-    onAddClicked: () -> Unit = {}
+    onAddClicked: () -> Unit = {},
+    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = Modifier.width(260.dp)
@@ -60,7 +68,7 @@ fun Contacts(
         Box(modifier = Modifier.fillMaxWidth()) {
             SearchBar(onAddClicked)
         }
-        Lists(list)
+        Lists(list = list, onItemClicked = onItemClicked)
     }
 }
 
@@ -80,7 +88,7 @@ fun SearchBar(onAddClicked: () -> Unit = {}) {
             painterResource("add.svg"), contentDescription = null, modifier = Modifier
                 .size(25.dp)
                 .clip(RoundedCornerShape(5.dp))
-                .clickable {  }
+                .clickable(onClick = onAddClicked)
                 .background(color = searchBackgroundColor)
 
         )
@@ -89,11 +97,16 @@ fun SearchBar(onAddClicked: () -> Unit = {}) {
 
 
 @Composable
-fun Lists(list: List<Contacts>) {
+fun Lists(
+    list: List<Contacts>,
+    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+) {
     LazyColumn {
-        items(list) {
-            Item(it)
-        }
+        itemsIndexed(list, itemContent = { index: Int, item: Contacts ->
+            Item(item, onItemClicked = {
+                onItemClicked(item, index)
+            })
+        })
     }
 }
 

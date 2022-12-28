@@ -18,6 +18,7 @@ import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.io.File
@@ -29,12 +30,18 @@ import java.io.File
  *@mail  2623036785@qq.com
  */
 
+data class LoginState(
+    val error: MutableState<Boolean> = mutableStateOf(false)
+)
+
 @Composable
 @Preview
 fun LoginScreen(
     onLogin: (userName: String, pwd: String) -> Unit = { _, _ -> },
     onRegister: () -> Unit = {},
+    loginState: LoginState,
 ) {
+
 
     val (getUserName, setUserName) = remember {
         mutableStateOf("")
@@ -43,8 +50,6 @@ fun LoginScreen(
     val (getPwd, setPwd) = remember {
         mutableStateOf("")
     }
-
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,13 +78,15 @@ fun LoginScreen(
             leadingIcon = {
                 Icon(
                     painter = painterResource("user.svg"),
-                    contentDescription = "user Lleading icon",
+                    contentDescription = "user leading icon",
                     modifier = Modifier.size(16.dp)
                 )
             },
             placeholder = {
                 Text("用户名")
-            })
+            },
+            isError = loginState.error.value
+        )
         //密码输入框
         OutlinedTextField(
             modifier = Modifier.padding(10.dp),
@@ -100,10 +107,14 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
             ),
+            visualTransformation = PasswordVisualTransformation(),
+            isError = loginState.error.value
         )
         //注册用户 & 登陆
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
-            .padding(top = 10.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
+                .padding(top = 10.dp)
+        ) {
             TextButton(
                 onClick = onRegister,
                 content = {

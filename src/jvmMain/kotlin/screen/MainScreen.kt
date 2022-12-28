@@ -1,6 +1,5 @@
 package screen
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,9 +18,10 @@ import style.itemUnSelectedColor
 import style.navBackgroundColor
 
 @Composable
-@Preview
 fun MainScreen(
-    list: List<Contacts>
+    list: List<Contacts>,
+    onAddClicked: () -> Unit = {},
+    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
 ) {
 
     val (selectedItem, selectedItemChanged) = remember {
@@ -30,7 +30,11 @@ fun MainScreen(
 
     Row {
         LeftNav(selectedItem = selectedItem, onSelectedChanged = selectedItemChanged)
-        RightContent(list)
+        RightContent(
+            list = list,
+            onAddClicked = onAddClicked,
+            onItemClicked = onItemClicked
+        )
 
     }
 }
@@ -102,6 +106,10 @@ fun NavIconButton(
 }
 
 @Composable
-fun RightContent(list: List<Contacts>) {
-    CommunicationScreen(list)
+fun RightContent(
+    list: List<Contacts>,
+    onAddClicked: () -> Unit = {},
+    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+) {
+    CommunicationScreen(list, onAddClicked = onAddClicked, onItemClicked = onItemClicked)
 }
