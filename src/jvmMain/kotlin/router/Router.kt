@@ -1,8 +1,6 @@
 package router
 
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Snackbar
 import androidx.compose.runtime.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +12,7 @@ import screen.RegisterScreen
 import test.list
 import utils.apiService
 import utils.md5
+import utils.scope
 
 /**
  *@author ZhiQiang Tu
@@ -43,10 +42,19 @@ fun Router(
     when (router.routerState.value) {
         is ScreenState.RegisterState -> {
             RegisterScreen(
-                register = { userName, pwd ->
-                    router.navigateTo(ScreenState.Login)
-                }
-            )
+                register = { user, pwd, name, sex, age ->
+                    scope.launch {
+                        val register = apiService.register(user, md5(pwd), sex, age, name)
+                        if (register.code == 200) {
+                            scaffoldState.snackbarHostState.showSnackbar("注册成功")
+                            router.navigateTo(ScreenState.Login)
+                        } else {
+                            scaffoldState.snackbarHostState.showSnackbar(register.msg)
+                        }
+                    }
+                },
+
+                )
         }
 
         is ScreenState.Home -> {
@@ -62,6 +70,7 @@ fun Router(
                         val login = apiService.login(name, md5(pwd))
                         if (login.code == 200) {
                             router.navigateTo(ScreenState.Home)
+                            scaffoldState.snackbarHostState.showSnackbar("登陆成功")
                             loginState.error.value = false
                         } else {
                             scaffoldState.snackbarHostState.showSnackbar(login.msg)

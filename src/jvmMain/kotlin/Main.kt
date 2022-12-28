@@ -31,11 +31,14 @@ fun main() = application {
         Window(
             onCloseRequest = ::exitApplication, icon = painterResource("wechat.svg"), title = "Wechat"
         ) {
-
+            //包裹一层scaffold使用snackbar ha~
             val scaffoldState = rememberScaffoldState()
-            Scaffold(scaffoldState = scaffoldState, content = {
-                Router(scaffoldState)
-            })
+            Scaffold(
+                scaffoldState = scaffoldState,
+                content = {
+                    Router(scaffoldState)
+                },
+            )
 
 
         }

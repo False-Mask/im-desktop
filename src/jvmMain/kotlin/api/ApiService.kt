@@ -1,7 +1,9 @@
 package api
 
 import bean.LoginResult
+import bean.RegisterResult
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -17,6 +19,15 @@ interface ApiService {
         @Query("userName") userName: String,
         @Query("pwd") pwd: String
     ): LoginResult
+
+    @POST("/user/register")
+    suspend fun register(
+        @Query("userName") userName: String,
+        @Query("pwd") pwd: String,
+        @Query("sex") sex: String,
+        @Query("age") age: Int,
+        @Query("name") name: String
+    ): RegisterResult
 
 }
 

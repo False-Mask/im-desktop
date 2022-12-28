@@ -1,13 +1,15 @@
 package utils
 
 import androidx.compose.ui.res.painterResource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import java.security.MessageDigest
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 private val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd:HH:mm")
-
+val scope = CoroutineScope(Dispatchers.IO)
 //当前时间与之前时间进行对比，如果日期不一样采用yy/MM/dd格式
 //否则采用HH:mm
 fun dataFormatter(timeStamp: Long): String {

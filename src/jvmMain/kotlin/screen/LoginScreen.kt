@@ -4,24 +4,17 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.io.File
 
 /**
  *@author ZhiQiang Tu
@@ -71,7 +64,8 @@ fun LoginScreen(
             text = "请登陆",
         )
         //用户名输入
-        OutlinedTextField(modifier = Modifier.padding(10.dp),
+        OutlinedTextField(
+            modifier = Modifier.padding(10.dp),
             value = getUserName,
             onValueChange = setUserName,
             singleLine = true,
@@ -97,7 +91,7 @@ fun LoginScreen(
                 Icon(
                     painter = painterResource("pwd.svg"),
                     contentDescription = "leading pwd icon",
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(16.dp),
                 )
             },
             placeholder = {
