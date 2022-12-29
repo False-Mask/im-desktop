@@ -246,18 +246,42 @@ fun Messages(
     model: MainModel
 ) {
 
-    val chats by model.chat.collectAsState()
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-            .background(chatBackgroundColor),
-    ) {
-        LazyColumn {
-            items(chats) {
-                MessageItem(data = it)
+    Column {
+        val chats by model.chat.collectAsState()
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .weight(3.0f)
+                .background(chatBackgroundColor),
+        ) {
+            LazyColumn {
+                items(chats) {
+                    MessageItem(data = it)
+                }
             }
         }
+        Spacer(modifier = Modifier.fillMaxWidth().height(1.dp).background(Color.Gray))
+        Box(
+            modifier = Modifier.weight(2.0f)
+                .fillMaxWidth()
+                .padding(10.dp),
+        ) {
+            Input()
+        }
     }
+
+}
+
+@Composable
+fun Input() {
+    val (input, inputChange) = remember {
+        mutableStateOf("")
+    }
+    BasicTextField(
+        value = input,
+        onValueChange = inputChange,
+        modifier = Modifier.fillMaxSize()
+    )
 }
 
 @Preview
