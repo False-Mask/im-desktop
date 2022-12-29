@@ -8,9 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bean.Contacts
 import bean.ContactsType
+import bean.MessageItem
+import screen.model.MainModel
+import style.chatBackgroundColor
+import style.contactChatContentColor
 import style.searchBackgroundColor
+import style.selfChatContentColor
 import utils.dataFormatter
 import utils.parseData
 import java.net.URL
@@ -33,11 +36,13 @@ import java.net.URL
 
 @Composable
 fun CommunicationScreen(
-    list: List<Contacts>,
+    model: MainModel,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts) -> Unit = {  _ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> }
 
 ) {
+
+    val list by model.listData.collectAsState()
 
     Row {
         Contacts(
@@ -49,7 +54,7 @@ fun CommunicationScreen(
             modifier = Modifier.width(1.dp)
                 .fillMaxHeight()
         )
-        Messages()
+        Messages(model = model)
     }
 
 }
@@ -58,7 +63,7 @@ fun CommunicationScreen(
 fun Contacts(
     list: List<Contacts>,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts) -> Unit = {_ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> }
 ) {
     Column(
         modifier = Modifier.width(260.dp)
@@ -236,6 +241,143 @@ fun Search() {
 
 
 @Composable
-fun Messages() {
+fun Messages(
+    model: MainModel
+) {
+
+    val chats by model.chat.collectAsState()
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(chatBackgroundColor),
+    ) {
+        LazyColumn {
+            items(chats) {
+                MessageItem(data = it)
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MessageItemTest() {
+
+    val l = listOf(
+        MessageItem(
+            false,
+            "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1667589327857-059c79de243e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=80",
+            "吻就落在耳后，阻隔喧嚣缺口。",
+            1672289180730L,
+        ),
+        MessageItem(
+            true,
+            "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1667589327857-059c79de243e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=80",
+            "吻就落在耳后，阻隔喧嚣缺口。",
+            1672289180730L,
+        ),
+        MessageItem(
+            true,
+            "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1667589327857-059c79de243e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=80",
+            "吻就落在耳后，阻隔喧嚣缺口。",
+            1672289180730L,
+        )
+
+    )
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(Color(0xFFf5f5f5))
+    ) {
+
+        LazyColumn {
+            items(l) { item ->
+                MessageItem(data = item)
+            }
+        }
+
+    }
 
 }
+
+@Composable
+fun MessageItem(
+    data: MessageItem = MessageItem()
+) {
+    if (data.isSelfMessage) {
+        Row(
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .fillMaxWidth()
+
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(start = 40.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(selfChatContentColor)
+                    .defaultMinSize(minHeight = 36.dp)
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = data.message,
+                )
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            //头像
+            Image(
+                bitmap = loadImageBitmap(
+                    inputStream = URL(data.profile).openStream().buffered()
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = 40.dp)
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
+    } else {
+
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .fillMaxWidth()
+        ) {
+            //头像
+            Image(
+                bitmap = loadImageBitmap(
+                    inputStream = URL(data.profile).openStream().buffered()
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 40.dp)
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Box(
+                modifier = Modifier
+                    .padding(end = 40.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(contactChatContentColor)
+                    .defaultMinSize(minHeight = 36.dp)
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = data.message,
+                )
+            }
+        }
+
+    }
+
+}
+

@@ -79,7 +79,7 @@ fun Router(
                     model.searchFriends(data.uid)
                 },
                 onItemClicked = {
-
+                    model.chat(data.uid,it.uid)
                 },
             )
         }

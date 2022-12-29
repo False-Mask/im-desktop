@@ -29,13 +29,12 @@ fun MainScreen(
         mutableStateOf(0)
     }
 
-    val list by model.listData.collectAsState()
 
     Row {
         LeftNav(selectedItem = selectedItem, onSelectedChanged = selectedItemChanged)
         RightContent(
+            model = model,
             selectedItem = selectedItem,
-            list = list,
             onAddClicked = onAddClicked,
             onItemClicked = onItemClicked,
         )
@@ -111,14 +110,14 @@ fun NavIconButton(
 
 @Composable
 fun RightContent(
-    list: List<Contacts>,
+    model: MainModel,
     selectedItem: Int,
     onAddClicked: () -> Unit = {},
     onItemClicked: (Contacts) -> Unit = { _ -> }
 ) {
     when (selectedItem) {
         0 -> {
-            CommunicationScreen(list, onAddClicked = onAddClicked, onItemClicked = onItemClicked)
+            CommunicationScreen(model, onAddClicked = onAddClicked, onItemClicked = onItemClicked)
         }
 
         1 -> {

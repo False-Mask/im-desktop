@@ -7,7 +7,7 @@ package bean
  *@mail  2623036785@qq.com
  */
 data class Contacts(
-    val uid: String = "",
+    val uid: Int = -1,
     val name: String = "",
     val lastTime: Long = 0,
     val icon: String = "",

@@ -2,6 +2,7 @@ package screen.model
 
 import bean.Contacts
 import bean.ContactsType
+import bean.MessageItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -22,6 +23,8 @@ class MainModel {
     private val _listData: MutableStateFlow<List<Contacts>> = MutableStateFlow(listOf())
     val listData: StateFlow<List<Contacts>> = _listData
 
+    private val _chat: MutableStateFlow<List<MessageItem>> = MutableStateFlow(listOf())
+    val chat: StateFlow<List<MessageItem>> = _chat
     fun searchFriends(id: Int) {
         scope.launch {
             _listData.value = MainRepo.getFriends(id)
@@ -38,5 +41,14 @@ class MainModel {
         }
     }
 
+    fun chat(from: Int, to: Int) {
+        scope.launch {
+            _chat.value = MainRepo.chaList(from,to)
+                .data
+                .map {
+                    MessageItem(it.selfMessage,it.profile,it.message,it.timeMills)
+                }
+        }
+    }
 
 }

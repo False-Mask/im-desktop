@@ -33,5 +33,8 @@ interface ApiService {
         @Query("id") id: Int
     ): Friends
 
+    @GET("/chat/list")
+    suspend fun chatList(@Query("from") from: Int, @Query("to") to: Int): Chat
+
 }
 

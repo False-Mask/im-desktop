@@ -25,6 +25,6 @@ data class Friends(
         @SerializedName("sex")
         val sex: String,
         @SerializedName("uid")
-        val uid: String
+        val uid: Int
     )
 }
