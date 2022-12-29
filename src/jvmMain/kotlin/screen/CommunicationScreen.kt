@@ -154,7 +154,8 @@ fun Item(
                     inputStream = URL(contact.icon).openStream().buffered()
                 ),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(40.dp)
+                    .clip(RoundedCornerShape(5.dp)),
                 contentScale = ContentScale.Crop
             )
             Column(
