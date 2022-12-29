@@ -2,6 +2,7 @@ package router
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.*
+import bean.LoginResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,7 +10,7 @@ import screen.LoginScreen
 import screen.LoginState
 import screen.MainScreen
 import screen.RegisterScreen
-import test.list
+import screen.model.MainModel
 import utils.apiService
 import utils.md5
 import utils.scope
@@ -23,9 +24,11 @@ import utils.scope
 class Router(initialState: MutableState<ScreenState>) {
 
     var routerState: MutableState<ScreenState> = initialState
+    var context: Any? = null
 
-    fun navigateTo(state: ScreenState) {
+    fun navigateTo(state: ScreenState, navigateContext: Any? = null) {
         routerState.value = state
+        context = navigateContext
     }
 }
 
@@ -58,7 +61,27 @@ fun Router(
         }
 
         is ScreenState.Home -> {
-            MainScreen(list)
+            val data = router.context as LoginResult.Data
+            val model = remember {
+                MainModel()
+            }
+
+            //数据初始化
+            SideEffect {
+                scope.launch {
+                    model.searchFriends(data.uid)
+                }
+            }
+
+            MainScreen(
+                model,
+                onAddClicked = {
+                    model.searchFriends(data.uid)
+                },
+                onItemClicked = {
+
+                },
+            )
         }
 
         is ScreenState.Login -> {
@@ -69,7 +92,7 @@ fun Router(
                     coroutine.launch {
                         val login = apiService.login(name, md5(pwd))
                         if (login.code == 200) {
-                            router.navigateTo(ScreenState.Home)
+                            router.navigateTo(ScreenState.Home, login.data)
                             scaffoldState.snackbarHostState.showSnackbar("登陆成功")
                             loginState.error.value = false
                         } else {

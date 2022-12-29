@@ -1,7 +1,6 @@
 package api
 
-import bean.LoginResult
-import bean.RegisterResult
+import bean.*
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -28,6 +27,11 @@ interface ApiService {
         @Query("age") age: Int,
         @Query("name") name: String
     ): RegisterResult
+
+    @GET("/contact/list")
+    suspend fun friends(
+        @Query("id") id: Int
+    ): Friends
 
 }
 

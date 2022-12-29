@@ -13,27 +13,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import bean.Contacts
+import screen.model.MainModel
 import style.itemSelectColor
 import style.itemUnSelectedColor
 import style.navBackgroundColor
 
 @Composable
 fun MainScreen(
-    list: List<Contacts>,
+    model: MainModel,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> }
 ) {
 
     val (selectedItem, selectedItemChanged) = remember {
         mutableStateOf(0)
     }
 
+    val list by model.listData.collectAsState()
+
     Row {
         LeftNav(selectedItem = selectedItem, onSelectedChanged = selectedItemChanged)
         RightContent(
+            selectedItem = selectedItem,
             list = list,
             onAddClicked = onAddClicked,
-            onItemClicked = onItemClicked
+            onItemClicked = onItemClicked,
         )
 
     }
@@ -108,8 +112,18 @@ fun NavIconButton(
 @Composable
 fun RightContent(
     list: List<Contacts>,
+    selectedItem: Int,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> }
 ) {
-    CommunicationScreen(list, onAddClicked = onAddClicked, onItemClicked = onItemClicked)
+    when (selectedItem) {
+        0 -> {
+            CommunicationScreen(list, onAddClicked = onAddClicked, onItemClicked = onItemClicked)
+        }
+
+        1 -> {
+
+        }
+    }
+
 }

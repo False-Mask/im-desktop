@@ -5,7 +5,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -36,7 +35,7 @@ import java.net.URL
 fun CommunicationScreen(
     list: List<Contacts>,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+    onItemClicked: (Contacts) -> Unit = {  _ -> }
 
 ) {
 
@@ -59,7 +58,7 @@ fun CommunicationScreen(
 fun Contacts(
     list: List<Contacts>,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+    onItemClicked: (Contacts) -> Unit = {_ -> }
 ) {
     Column(
         modifier = Modifier.width(260.dp)
@@ -99,14 +98,14 @@ fun SearchBar(onAddClicked: () -> Unit = {}) {
 @Composable
 fun Lists(
     list: List<Contacts>,
-    onItemClicked: (Contacts, Int) -> Unit = { _, _ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> }
 ) {
     LazyColumn {
-        itemsIndexed(list, itemContent = { index: Int, item: Contacts ->
+        items(list) { item ->
             Item(item, onItemClicked = {
-                onItemClicked(item, index)
+                onItemClicked(item)
             })
-        })
+        }
     }
 }
 
@@ -181,7 +180,6 @@ fun Item(
                         color = Color.Gray,
                         fontWeight = FontWeight.Thin,
                         maxLines = 1,
-                        textAlign = TextAlign.Center,
                     )
                 }
                 Text(
@@ -190,7 +188,6 @@ fun Item(
                     color = Color.Gray,
                     fontWeight = FontWeight.Normal,
                     maxLines = 1,
-                    textAlign = TextAlign.Center,
                     overflow = TextOverflow.Ellipsis,
                 )
             }

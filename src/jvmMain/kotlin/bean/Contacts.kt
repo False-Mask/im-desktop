@@ -7,11 +7,12 @@ package bean
  *@mail  2623036785@qq.com
  */
 data class Contacts(
-    val name: String,
-    val lastTime: Long,
-    val icon: String,
-    val lastMessage: String,
-    val type: ContactsType
+    val uid: String = "",
+    val name: String = "",
+    val lastTime: Long = 0,
+    val icon: String = "",
+    val lastMessage: String = "",
+    val type: ContactsType = ContactsType.PERSON,
 )
 
 enum class ContactsType {
