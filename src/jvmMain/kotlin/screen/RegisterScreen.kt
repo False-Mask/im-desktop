@@ -15,7 +15,13 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun RegisterScreen(
-    register: (userName: String, pwd: String, name: String, sex: String, age: Int) -> Unit = { _, _, _, _, _ -> },
+    register: (
+        userName: String,
+        pwd: String,
+        name: String,
+        sex: String,
+        age: Int
+    ) -> Unit = { _, _, _, _, _ -> },
 
     ) {
     //用户名
