@@ -1,6 +1,5 @@
 package utils
 
-import androidx.compose.ui.res.painterResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import java.security.MessageDigest

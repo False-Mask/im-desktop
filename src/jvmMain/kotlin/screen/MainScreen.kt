@@ -22,7 +22,9 @@ import style.navBackgroundColor
 fun MainScreen(
     model: MainModel,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts) -> Unit = { _ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> },
+    onSend: (String) -> Unit = { _ -> }
+
 ) {
 
     val (selectedItem, selectedItemChanged) = remember {
@@ -37,6 +39,7 @@ fun MainScreen(
             selectedItem = selectedItem,
             onAddClicked = onAddClicked,
             onItemClicked = onItemClicked,
+            onSend = onSend
         )
 
     }
@@ -113,11 +116,13 @@ fun RightContent(
     model: MainModel,
     selectedItem: Int,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts) -> Unit = { _ -> }
+    onItemClicked: (Contacts) -> Unit = { _ -> },
+    onSend: (String) -> Unit = { _ -> }
+
 ) {
     when (selectedItem) {
         0 -> {
-            CommunicationScreen(model, onAddClicked = onAddClicked, onItemClicked = onItemClicked)
+            CommunicationScreen(model, onAddClicked = onAddClicked, onItemClicked = onItemClicked, onSend = onSend)
         }
 
         1 -> {

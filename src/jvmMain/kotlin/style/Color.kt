@@ -14,3 +14,7 @@ val selfChatContentColor = Color(0xFF95ec69)
 val contactChatContentColor = Color(0xFFffffff)
 
 val chatBackgroundColor = Color(0xfff5f5f5)
+
+val chatSendBackground = Color(0xffe9e9e9)
+
+val chatSendFontColor = Color(0xFF07c160)

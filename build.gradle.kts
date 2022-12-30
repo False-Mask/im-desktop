@@ -47,6 +47,9 @@ compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
+            includeAllModules = true
+
+            modules("jdk.crypto.ec")
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "im"
             packageVersion = "1.0.0"

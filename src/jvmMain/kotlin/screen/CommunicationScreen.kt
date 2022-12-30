@@ -24,13 +24,14 @@ import androidx.compose.ui.unit.sp
 import bean.Contacts
 import bean.ContactsType
 import bean.MessageItem
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import screen.model.MainModel
-import style.chatBackgroundColor
-import style.contactChatContentColor
-import style.searchBackgroundColor
-import style.selfChatContentColor
+import style.*
 import utils.dataFormatter
 import utils.parseData
+import utils.scope
 import java.net.URL
 
 
@@ -38,8 +39,8 @@ import java.net.URL
 fun CommunicationScreen(
     model: MainModel,
     onAddClicked: () -> Unit = {},
-    onItemClicked: (Contacts) -> Unit = { _ -> }
-
+    onItemClicked: (Contacts) -> Unit = { _ -> },
+    onSend: (String) -> Unit = { _ -> }
 ) {
 
     val list by model.listData.collectAsState()
@@ -54,7 +55,7 @@ fun CommunicationScreen(
             modifier = Modifier.width(1.dp)
                 .fillMaxHeight()
         )
-        Messages(model = model)
+        Messages(model = model, onSend = onSend)
     }
 
 }
@@ -243,18 +244,21 @@ fun Search() {
 
 @Composable
 fun Messages(
-    model: MainModel
+    model: MainModel,
+    onSend: (String) -> Unit = { _ -> },
 ) {
 
+    val chats by model.chat.collectAsState()
 
     Column {
-        val chats by model.chat.collectAsState()
         Box(
             modifier = Modifier.fillMaxSize()
                 .weight(3.0f)
                 .background(chatBackgroundColor),
         ) {
-            LazyColumn {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 100.dp)
+            ) {
                 items(chats) {
                     MessageItem(data = it)
                 }
@@ -266,22 +270,55 @@ fun Messages(
                 .fillMaxWidth()
                 .padding(10.dp),
         ) {
-            Input()
+            Input(onSend, model)
         }
     }
 
 }
 
 @Composable
-fun Input() {
+fun Input(
+    onSend: (String) -> Unit,
+    model: MainModel
+) {
     val (input, inputChange) = remember {
         mutableStateOf("")
     }
-    BasicTextField(
-        value = input,
-        onValueChange = inputChange,
-        modifier = Modifier.fillMaxSize()
-    )
+
+    SideEffect {
+        scope.launch {
+            model.clearEvent.collect {
+                inputChange("")
+            }
+        }
+    }
+
+    Box {
+        BasicTextField(
+            value = input,
+            onValueChange = inputChange,
+            modifier = Modifier.fillMaxSize()
+        )
+        Button(
+            onClick = {
+                if (input != "") {
+                    onSend(input)
+                }
+            },
+            content = {
+                Text(
+                    "发送", color = chatSendFontColor,
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                )
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = chatSendBackground
+            )
+        )
+    }
 }
 
 @Preview
