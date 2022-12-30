@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="im-jvm-1.0-SNAPSHOT">
-    <output-path>$PROJECT_DIR$/build/libs</output-path>
-    <root id="archive" name="im-jvm-1.0-SNAPSHOT.jar">
-      <element id="module-output" name="im.jvmMain" />
-    </root>
-  </artifact>
-</component>
