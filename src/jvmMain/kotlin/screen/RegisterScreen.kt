@@ -18,23 +18,23 @@ fun RegisterScreen(
     register: (userName: String, pwd: String, name: String, sex: String, age: Int) -> Unit = { _, _, _, _, _ -> },
 
     ) {
-
+    //用户名
     val (getUserName, setUserName) = remember {
         mutableStateOf("")
     }
-
+    //密码
     val (getPwd, setPwd) = remember {
         mutableStateOf("")
     }
-
+    //重复输入密码
     val (getRepwd, setRepwd) = remember {
         mutableStateOf("")
     }
-
+    //年龄
     val (getAge, setAge) = remember {
         mutableStateOf("")
     }
-
+    //名称
     val (getName, setName) = remember {
         mutableStateOf("")
     }
@@ -44,11 +44,12 @@ fun RegisterScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-
+        //账号输入框
         OutlinedTextField(
             modifier = Modifier.padding(top = 10.dp),
             value = getUserName,
             onValueChange = {
+                //对输入的内容进行正则匹配
                 if (it == "" || it.matches("[0-9]{1,10}".toRegex())) {
                     setUserName(it)
                 }
@@ -65,7 +66,7 @@ fun RegisterScreen(
                 )
             },
         )
-
+        //密码输入框
         OutlinedTextField(
             modifier = Modifier.padding(top = 10.dp),
             value = getPwd,
@@ -84,7 +85,7 @@ fun RegisterScreen(
             visualTransformation = PasswordVisualTransformation()
 
         )
-
+        //repassword
         OutlinedTextField(
             modifier = Modifier.padding(top = 10.dp),
             value = getRepwd,
@@ -103,7 +104,7 @@ fun RegisterScreen(
             },
             visualTransformation = PasswordVisualTransformation()
         )
-
+        //输入姓名
         OutlinedTextField(
             modifier = Modifier.padding(top = 10.dp),
             value = getName,
@@ -120,7 +121,7 @@ fun RegisterScreen(
                 )
             },
         )
-
+        //输入年龄
         OutlinedTextField(modifier = Modifier.padding(top = 10.dp), value = getAge, onValueChange = {
             //设置只有输入数字时候才接受输入
             if (it == "" || it.matches("[0-9]{1,3}".toRegex())) {
@@ -161,7 +162,7 @@ fun RegisterScreen(
         }
 
 
-
+        //注册按钮
         OutlinedButton(modifier = Modifier.padding(10.dp), onClick = {
             register(
                 getUserName, getPwd, getName,

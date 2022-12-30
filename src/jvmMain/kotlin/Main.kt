@@ -29,7 +29,7 @@ fun main() = application {
     val state = rememberWindowState()
     MaterialTheme {
         Window(
-            onCloseRequest = ::exitApplication, icon = painterResource("wechat.svg"), title = "Wechat"
+            onCloseRequest = ::exitApplication, icon = painterResource("wechat.svg"), title = "IM"
         ) {
             //包裹一层scaffold使用snackbar ha~
             val scaffoldState = rememberScaffoldState()
