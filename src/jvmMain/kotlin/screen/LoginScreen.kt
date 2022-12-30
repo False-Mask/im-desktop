@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
  *@signature 我将追寻并获取我想要的答案
  *@mail  2623036785@qq.com
  */
-
+//用于通知用户登陆失败，警示用户的bean类
 data class LoginState(
     val error: MutableState<Boolean> = mutableStateOf(false)
 )
@@ -35,11 +35,11 @@ fun LoginScreen(
     loginState: LoginState,
 ) {
 
-
+    //账户
     val (getUserName, setUserName) = remember {
         mutableStateOf("")
     }
-
+    //密码
     val (getPwd, setPwd) = remember {
         mutableStateOf("")
     }
