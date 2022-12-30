@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.sp
 import bean.Contacts
 import bean.ContactsType
 import bean.MessageItem
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import screen.model.MainModel
 import style.*
