@@ -28,7 +28,7 @@
 
 
 
-![img](D:/Code/2023/im/im-desktop/README.assets/clip_image002.jpg)
+![img](./assets/clip_image002.jpg)
 
 
 
@@ -38,7 +38,7 @@
 
 
 
-![img](D:/Code/2023/im/im-desktop/README.assets/clip_image002-16787087710791.jpg)
+![img](./assets/clip_image002-16787087710791.jpg)
 
 
 
@@ -48,4 +48,4 @@
 
 
 
-![img](D:/Code/2023/im/im-desktop/README.assets/clip_image002-16787088183992.jpg)
+![img](./assets/clip_image002-16787088183992.jpg)
